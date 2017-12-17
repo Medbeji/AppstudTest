@@ -14,7 +14,6 @@ class MapVC: UIViewController,CLLocationManagerDelegate {
     
     
     // Location Manager
-
     let locationManager = CLLocationManager()
     
     // My Current Location
@@ -29,11 +28,9 @@ class MapVC: UIViewController,CLLocationManagerDelegate {
     
     
     
-
+    
+    
     // Nearby Places Attribute
-    
-    
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         

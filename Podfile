@@ -7,6 +7,9 @@ target 'InternshipTest' do
 
   # Pods for InternshipTest
   pod 'GoogleMaps'
+  pod 'Alamofire', '~> 4.4'
+  pod 'AlamofireObjectMapper', '~> 4.0'
+  pod 'AlamofireImage', '~> 3.1'
   
   target 'InternshipTestTests' do
     inherit! :search_paths

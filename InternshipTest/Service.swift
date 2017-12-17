@@ -8,7 +8,6 @@
 
 import Foundation
 
-
 struct Service {
     
     static let sharedInstance = Service()
@@ -18,13 +17,7 @@ struct Service {
         
         let url = URL(string: "https://maps.googleapis.com/maps/api/place/nearbysearch/json?key=AIzaSyAAyWCYWfI5ZDdE2ZGJo8o0OqSWUJk-Who&location=\(latitude),\(longitude)&radius=\(radius)")
        
-        
-        
-        
-        
-        
-        
-        
+                
         
         
     }
