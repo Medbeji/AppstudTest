@@ -9,16 +9,19 @@
 import UIKit
 import GoogleMaps
 
-class ListVC: UICollectionViewController, UICollectionViewDelegateFlowLayout {
+class ListVC: UICollectionViewController {
     
+    // Current Location Property
     var location: CLLocation?
 
+    // Pull to refresh property
     let refresher = UIRefreshControl()
 
     
+    // Cell id
+    let cellId = "cellId"
     
-    private let cellId = "cellId"
-    
+    // Places
     var places: [Place]? {
         didSet {
             self.collectionView?.reloadData()
@@ -35,7 +38,7 @@ class ListVC: UICollectionViewController, UICollectionViewDelegateFlowLayout {
         pullToRefresh()
     }
     
-    
+    // Handle pullToRefresh functionnality
     func pullToRefresh(){
         refresher.backgroundColor = .white
         self.collectionView!.alwaysBounceVertical = true
@@ -44,6 +47,8 @@ class ListVC: UICollectionViewController, UICollectionViewDelegateFlowLayout {
         collectionView!.addSubview(refresher)
     }
     
+    
+    // loadData when we pull To Refresh
     func loadData(){
         var lat: Double?
         var long:  Double?
@@ -63,12 +68,24 @@ class ListVC: UICollectionViewController, UICollectionViewDelegateFlowLayout {
         
     }
     
+    
+    
+
+
+  
+}
+
+
+extension ListVC : UICollectionViewDelegateFlowLayout {
+    
+    // Handle CollectionView Flow Layout delegate methods
+    
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return (places != nil ) ? places!.count : 0
     }
     
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellId, for: indexPath) as! PlaceCell
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: self.cellId, for: indexPath) as! PlaceCell
         if let places = places {
             cell.place = places[indexPath.row]
         }
@@ -79,7 +96,7 @@ class ListVC: UICollectionViewController, UICollectionViewDelegateFlowLayout {
         return CGSize(width: view.frame.width, height: 230)
     }
     
-  
+    
+    
 }
-
 
