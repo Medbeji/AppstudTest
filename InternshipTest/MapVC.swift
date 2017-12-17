@@ -10,107 +10,130 @@ import UIKit
 import GoogleMaps
 
 
-class MapVC: UIViewController,CLLocationManagerDelegate {
+class MapVC: UIViewController {
     
-    
-    // Location Manager
-    let locationManager = CLLocationManager()
-    
-    // My Current Location
-    var myCurrentLocation :  CLLocationCoordinate2D? {
-       didSet {
-            // Handle current location set
-            if let myLocation = myCurrentLocation {
-                 Service.sharedInstance.nearbyPlaces(latitude: myLocation.latitude,longitude: myLocation.longitude)
+    // NearbyPlaces
+    var nearbyPlaces: [Place]? {
+        didSet {
+            if let nearbyplaces = nearbyPlaces {
+                self.drawMarkers(places: nearbyplaces)
             }
         }
     }
     
+    func drawMarkers(places: [Place]){
+        for place in places {
+            let marker = CustomMarker()
+            marker.position = CLLocationCoordinate2D(latitude: place.latitude!, longitude: place.longitude!)
+            // Disable interaction as APPSTUD-04 requires
+            marker.isTappable = false
+            // Set image to marker asynchronously
+            if let imageRef = place.photo_reference {
+                Service.sharedInstance.downloadImage(imageRef: imageRef, completion: { (image) in
+                    if let image = image {
+                        marker.imageView.image = image
+                    }
+                })
+            }
+            // Add marker to the map
+            marker.map = self.mapView
+        }
+    }
     
+    var locationManager = CLLocationManager()
+
     
+    // My Location 
+    var myLocation: CLLocation?
     
+    // Google Maps Properties
+    var camera: GMSCameraPosition?
+    var mapView: GMSMapView?
+    
+   
     
     // Nearby Places Attribute
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        // Request for your Position
-        
-        // Request for nearby places
-        enableLocationServices()
-       
-        loadView()
-    }
-    
-    
-    
-    override func loadView() {
-        // Create a GMSCameraPosition that tells the map to display the
-        // coordinate -33.86,151.20 at zoom level 6.
-        let camera = GMSCameraPosition.camera(withLatitude: -33.86, longitude: 151.20, zoom: 6.0)
-        let mapView = GMSMapView.map(withFrame: CGRect.zero, camera: camera)
-        mapView.isMyLocationEnabled = true
-        view = mapView
-        // Creates a marker in the center of the map.
-        let marker = GMSMarker()
-        marker.position = CLLocationCoordinate2D(latitude: -33.86, longitude: 151.20)
-        marker.title = "Sydney"
-        marker.snippet = "Australia"
-        marker.map = mapView
-    }
-    
-    
-    func enableLocationServices() {
-        locationManager.delegate = self
         locationManager.desiredAccuracy = kCLLocationAccuracyBest
-        
-        switch CLLocationManager.authorizationStatus() {
-        case .notDetermined:
-            // Request when-in-use authorization initially
-            locationManager.requestWhenInUseAuthorization()
-            locationManager.startUpdatingLocation()
-            break
-            
-        case .restricted, .denied:
-            // Disable location features
-            disableMyLocationBasedFeatures()
-            break
-            
-        case .authorizedWhenInUse:
-            // Enable basic location features
-            enableMyWhenInUseFeatures()
-            locationManager.startUpdatingLocation()
-            break
-            
-        case .authorizedAlways:
-            // Enable any of your app's location features
-            enableMyAlwaysFeatures()
-            locationManager.startUpdatingLocation()
-            break
-        }
-    }
-    
-    
-    func disableMyLocationBasedFeatures() {
-        
-    }
-    func enableMyWhenInUseFeatures(){
-        
-    }
-    func enableMyAlwaysFeatures(){
+        locationManager.requestAlwaysAuthorization()
+        locationManager.distanceFilter = 50
+        locationManager.startUpdatingLocation()
+        locationManager.delegate = self
         
     }
     
     
+    // Override the loadView method from UIViewController
+    override func loadView() {
+        self.camera = GMSCameraPosition.camera(withLatitude: -33.86, longitude: 151.20, zoom: 6.0)
+        self.mapView = GMSMapView.map(withFrame: CGRect.zero, camera: camera!)
+        self.mapView!.isMyLocationEnabled = true
+        view = mapView
+    }
+
+    
+}
+
+
+
+extension MapVC: GMSMapViewDelegate,CLLocationManagerDelegate {
+    
+    // Handle incoming location events.
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
-        if let location = locations.first {
-            self.locationManager.stopUpdatingLocation()
-            self.myCurrentLocation = location.coordinate
-            return
+        
+        NSLog("My position changed")
+        
+        // Update my location property of the class
+        self.myLocation = locations.last!
+        
+        // Get lat and long from the current postion
+        guard let lat = self.mapView?.myLocation?.coordinate.latitude else { return }
+        guard let long = self.mapView?.myLocation?.coordinate.longitude else { return }
+        
+        // Fetch nearby places based on the current coordinates
+        Service.sharedInstance.nearbyPlaces(latitude: lat, longitude: long) { (places) in
+            self.nearbyPlaces = places
+        }
+        
+        // Center camera on user location
+        let update = GMSCameraUpdate.setTarget((self.mapView?.myLocation?.coordinate)!, zoom: 15.0)
+        self.mapView?.moveCamera(update)
+        
+        // Pass this postion the listVC
+        let navController = tabBarController?.viewControllers?.last as! UINavigationController
+        let listVC = navController.viewControllers.first as! ListVC
+        listVC.location = self.mapView?.myLocation
+
+    }
+    
+    // Handle authorization for the location manager.
+    func locationManager(_ manager: CLLocationManager, didChangeAuthorization status: CLAuthorizationStatus) {
+        switch status {
+            
+        case .restricted:
+            print("Location access was restricted.")
+        case .denied:
+            print("User denied access to location.")
+            // Display the map using the default location.
+            self.mapView?.isHidden = false
+        case .notDetermined:
+            print("Location status not determined.")
+        case .authorizedAlways: fallthrough
+        case .authorizedWhenInUse:
+            print("Location status is OK.")
         }
     }
     
-    
+    // Handle location manager errors.
+    func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
+        locationManager.stopUpdatingLocation()
+        print("Error: \(error)")
+    }
+
+
+  
     
 }
     

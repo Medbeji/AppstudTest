@@ -23,7 +23,7 @@ class HomeTBController: UITabBarController {
         mapNavigationController.tabBarItem.image = UIImage(named: "map")
         
         // Setup Controller 2
-        let vc2 = PlacesVC()
+        let vc2 = ListVC()
         let listNavigationController = UINavigationController(rootViewController: vc2)
         listNavigationController.title = "List"
         listNavigationController.tabBarItem.image = UIImage(named: "list")

@@ -7,9 +7,12 @@
 //
 
 import UIKit
+import GoogleMaps
 
-class PlacesVC: UIViewController {
-
+class ListVC: UIViewController {
+    
+    var location: CLLocation?
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         self.view.backgroundColor = .yellow

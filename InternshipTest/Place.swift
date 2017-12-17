@@ -6,25 +6,30 @@
 //  Copyright © 2017 Appstud. All rights reserved.
 //
 
-import Foundation
+import ObjectMapper
 
 
-struct Place {
+
+class Place: Mappable {
     
-    var name: String = ""
-    var imageUrlRef: String = ""
-    var id: String = ""
+    var name: String?
+    var id: String?
+    var place_id: String?
+    var latitude: Double?
+    var longitude: Double?
+    var photo_reference: String?
     
-    init(json: [String: AnyObject]) {
-        if let id = json["id"] as? String {
-            self.id = id
-        }
-        if let name = json["name"] as? String {
-            self.name = name
-        }
-        if let imageUrlRef = json["name"] as? String {
-            self.imageUrlRef = imageUrlRef
-        }
+    required init?(map: Map) {
+        
+    }
+    
+    func mapping(map: Map) {
+        name <- map["name"]
+        id <- map["id"]
+        place_id <- map["place_id"]
+        latitude <- map["geometry.location.lat"]
+        longitude <- map["geometry.location.lng"]
+        photo_reference <- map["photos.0.photo_reference"]
     }
     
 }
