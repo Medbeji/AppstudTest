@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import GoogleMaps
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -16,6 +17,23 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
+        
+        
+        /* Initialise the window for the app */
+        window =  UIWindow(frame: UIScreen.main.bounds)
+        window?.makeKeyAndVisible()
+        
+        /* Initialise the layout for collectionview for the second view*/
+        let layout = UICollectionViewFlowLayout()
+        layout.minimumLineSpacing = 0
+        
+        /* Assign our TabBar Controller controller to the Root View Controller*/
+        window?.rootViewController = HomeTBController()
+        
+        /* Google Maps SDK Initialisation */
+        GMSServices.provideAPIKey("AIzaSyAAyWCYWfI5ZDdE2ZGJo8o0OqSWUJk-Who")
+        
+        
         return true
     }
 
