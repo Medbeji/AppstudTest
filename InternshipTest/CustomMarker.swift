@@ -40,11 +40,12 @@ class CustomMarker: GMSMarker {
     
     
     private func setupViews() {
-        
-      
+     
         // Setup Main Shape to match the same marker view frame
         shapeLayer.bounds = markerView.frame
         shapeLayer.position = markerView.center
+        
+        // Black round shape
         let pointerRadius = CGSize(width: shapeLayer.frame.width / 2, height: shapeLayer.frame.width / 2)
         shapeLayer.path = UIBezierPath(roundedRect: markerView.frame, byRoundingCorners: cornersToRound, cornerRadii: pointerRadius).cgPath
         markerView.layer.mask = shapeLayer

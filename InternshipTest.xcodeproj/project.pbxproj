@@ -23,6 +23,8 @@
 		5050074C1FE5DAA20051A96C /* MapVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5050074A1FE5DAA20051A96C /* MapVC.swift */; };
 		5050074D1FE5DAA20051A96C /* ListVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5050074B1FE5DAA20051A96C /* ListVC.swift */; };
 		505BB2501FE5E67F0019A493 /* Service.swift in Sources */ = {isa = PBXBuildFile; fileRef = 505BB24F1FE5E67F0019A493 /* Service.swift */; };
+		50FC08E31FE6C6110014CF80 /* MapLocationExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50FC08E21FE6C6110014CF80 /* MapLocationExtension.swift */; };
+		50FC08E51FE6C69D0014CF80 /* PlaceCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50FC08E41FE6C69D0014CF80 /* PlaceCell.swift */; };
 		54E529C0D62C8CF27A9A78C6 /* Pods_InternshipTestTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DE1551F02BF11DC4B159D94B /* Pods_InternshipTestTests.framework */; };
 		C8E164788C8CBA089E373380 /* Pods_InternshipTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6373E85DB5AD94E47954817D /* Pods_InternshipTest.framework */; };
 		F67731710B4E4CAEB5E66AB7 /* Pods_InternshipTestUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 25E0983F7ED2778BDDFC3971 /* Pods_InternshipTestUITests.framework */; };
@@ -72,6 +74,8 @@
 		5050074A1FE5DAA20051A96C /* MapVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MapVC.swift; sourceTree = "<group>"; };
 		5050074B1FE5DAA20051A96C /* ListVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ListVC.swift; sourceTree = "<group>"; };
 		505BB24F1FE5E67F0019A493 /* Service.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Service.swift; sourceTree = "<group>"; };
+		50FC08E21FE6C6110014CF80 /* MapLocationExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MapLocationExtension.swift; sourceTree = "<group>"; };
+		50FC08E41FE6C69D0014CF80 /* PlaceCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PlaceCell.swift; sourceTree = "<group>"; };
 		6373E85DB5AD94E47954817D /* Pods_InternshipTest.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_InternshipTest.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		A5DF97E9C773CE333899D1E6 /* Pods-InternshipTestUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-InternshipTestUITests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-InternshipTestUITests/Pods-InternshipTestUITests.debug.xcconfig"; sourceTree = "<group>"; };
 		C2CD8D05F57AE8EAD9CE8BDF /* Pods-InternshipTestTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-InternshipTestTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-InternshipTestTests/Pods-InternshipTestTests.release.xcconfig"; sourceTree = "<group>"; };
@@ -180,6 +184,7 @@
 		5050073D1FE5DA550051A96C /* Controller */ = {
 			isa = PBXGroup;
 			children = (
+				50FC08DF1FE6C5E40014CF80 /* extensions */,
 				5050074A1FE5DAA20051A96C /* MapVC.swift */,
 				5050074B1FE5DAA20051A96C /* ListVC.swift */,
 				505007481FE5DA940051A96C /* HomeTBController.swift */,
@@ -191,6 +196,7 @@
 			isa = PBXGroup;
 			children = (
 				500B73BF1FE69CB900C4AE9F /* CustomMarker.swift */,
+				50FC08E41FE6C69D0014CF80 /* PlaceCell.swift */,
 			);
 			name = View;
 			sourceTree = "<group>";
@@ -220,6 +226,30 @@
 				505007441FE5DA820051A96C /* DiscardableImageCacheItem.swift */,
 			);
 			name = Helpers;
+			sourceTree = "<group>";
+		};
+		50FC08DF1FE6C5E40014CF80 /* extensions */ = {
+			isa = PBXGroup;
+			children = (
+				50FC08E11FE6C5F70014CF80 /* ListVC */,
+				50FC08E01FE6C5EE0014CF80 /* MapVC */,
+			);
+			name = extensions;
+			sourceTree = "<group>";
+		};
+		50FC08E01FE6C5EE0014CF80 /* MapVC */ = {
+			isa = PBXGroup;
+			children = (
+				50FC08E21FE6C6110014CF80 /* MapLocationExtension.swift */,
+			);
+			name = MapVC;
+			sourceTree = "<group>";
+		};
+		50FC08E11FE6C5F70014CF80 /* ListVC */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = ListVC;
 			sourceTree = "<group>";
 		};
 		F160A75632F50E0286DBF940 /* Frameworks */ = {
@@ -513,6 +543,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				50FC08E51FE6C69D0014CF80 /* PlaceCell.swift in Sources */,
 				505007451FE5DA820051A96C /* AnchorsExtensions.swift in Sources */,
 				505BB2501FE5E67F0019A493 /* Service.swift in Sources */,
 				5050074C1FE5DAA20051A96C /* MapVC.swift in Sources */,
@@ -522,6 +553,7 @@
 				5050074D1FE5DAA20051A96C /* ListVC.swift in Sources */,
 				5030FEEF1FE66A6B00D3CC12 /* PlaceAFResponse.swift in Sources */,
 				5030FEED1FE66A1A00D3CC12 /* Place.swift in Sources */,
+				50FC08E31FE6C6110014CF80 /* MapLocationExtension.swift in Sources */,
 				505007491FE5DA940051A96C /* HomeTBController.swift in Sources */,
 				505007101FE5DA440051A96C /* AppDelegate.swift in Sources */,
 			);
@@ -680,7 +712,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				INFOPLIST_FILE = InternshipTest/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.appstud.InternshipTest;
+				PRODUCT_BUNDLE_IDENTIFIER = com.appstud.iOSTest;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 3.0;
 				TARGETED_DEVICE_FAMILY = 1;
@@ -694,7 +726,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				INFOPLIST_FILE = InternshipTest/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.appstud.InternshipTest;
+				PRODUCT_BUNDLE_IDENTIFIER = com.appstud.iOSTest;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 3.0;
 				TARGETED_DEVICE_FAMILY = 1;

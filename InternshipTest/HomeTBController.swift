@@ -22,8 +22,12 @@ class HomeTBController: UITabBarController {
         mapNavigationController.title = "Map"
         mapNavigationController.tabBarItem.image = UIImage(named: "map")
         
+        
+        /* Initialise the layout for collectionview */
+        let layout = UICollectionViewFlowLayout()
+        layout.minimumLineSpacing = 0
         // Setup Controller 2
-        let vc2 = ListVC()
+        let vc2 = ListVC(collectionViewLayout: layout)
         let listNavigationController = UINavigationController(rootViewController: vc2)
         listNavigationController.title = "List"
         listNavigationController.tabBarItem.image = UIImage(named: "list")

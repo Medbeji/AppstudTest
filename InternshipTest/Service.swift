@@ -25,6 +25,8 @@ class Service {
     fileprivate let maxThumbnailWidth = 100
     fileprivate let maxImageWidth = 1000
     fileprivate let radius = 2000
+  
+    
     
     func nearbyPlaces(latitude: Double,longitude: Double, completion: @escaping (([Place]) -> () ) ) {
    
@@ -32,6 +34,7 @@ class Service {
         urlString = urlString.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)!
         Alamofire.request(urlString).responseObject { (response: DataResponse<PlaceAFResponse>) in
             let placeResponse = response.result.value
+            NSLog("Google Place Api Status : \(placeResponse!.status!)")
             if let results = placeResponse?.results {
                 completion(results)
             }else{

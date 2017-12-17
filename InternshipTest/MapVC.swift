@@ -17,10 +17,54 @@ class MapVC: UIViewController {
         didSet {
             if let nearbyplaces = nearbyPlaces {
                 self.drawMarkers(places: nearbyplaces)
+                // Pass these places to the list controller
+                let navController = tabBarController?.viewControllers?.last as! UINavigationController
+                let listVC = navController.viewControllers.first as! ListVC
+                listVC.places = nearbyplaces
             }
         }
     }
     
+
+    // LocationManager property to detect position changes
+    var locationManager = CLLocationManager()
+    
+    
+    // My Location
+    var myLocation: CLLocation?
+    
+    // Google Maps Properties
+    var camera: GMSCameraPosition?
+    var mapView: GMSMapView?
+    
+   
+    
+    // Nearby Places Attribute
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        navigationItem.title = "Map"
+        locationSettings()
+        
+    }
+    
+    // Setup Location settings
+    func locationSettings(){
+        locationManager.desiredAccuracy = kCLLocationAccuracyBest
+        locationManager.requestAlwaysAuthorization()
+        locationManager.distanceFilter = 50
+        locationManager.startUpdatingLocation()
+        locationManager.delegate = self
+    }
+    
+    // Override the loadView method from UIViewController
+    override func loadView() {
+        self.camera = GMSCameraPosition.camera(withLatitude: -33.86, longitude: 151.20, zoom: 6.0)
+        self.mapView = GMSMapView.map(withFrame: CGRect.zero, camera: camera!)
+        self.mapView!.isMyLocationEnabled = true
+        view = mapView
+    }
+    
+    // Draw Marker for each place
     func drawMarkers(places: [Place]){
         for place in places {
             let marker = CustomMarker()
@@ -40,101 +84,10 @@ class MapVC: UIViewController {
         }
     }
     
-    var locationManager = CLLocationManager()
-
-    
-    // My Location 
-    var myLocation: CLLocation?
-    
-    // Google Maps Properties
-    var camera: GMSCameraPosition?
-    var mapView: GMSMapView?
-    
-   
-    
-    // Nearby Places Attribute
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        
-        locationManager.desiredAccuracy = kCLLocationAccuracyBest
-        locationManager.requestAlwaysAuthorization()
-        locationManager.distanceFilter = 50
-        locationManager.startUpdatingLocation()
-        locationManager.delegate = self
-        
-    }
-    
-    
-    // Override the loadView method from UIViewController
-    override func loadView() {
-        self.camera = GMSCameraPosition.camera(withLatitude: -33.86, longitude: 151.20, zoom: 6.0)
-        self.mapView = GMSMapView.map(withFrame: CGRect.zero, camera: camera!)
-        self.mapView!.isMyLocationEnabled = true
-        view = mapView
-    }
-
     
 }
 
 
 
-extension MapVC: GMSMapViewDelegate,CLLocationManagerDelegate {
-    
-    // Handle incoming location events.
-    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
-        
-        NSLog("My position changed")
-        
-        // Update my location property of the class
-        self.myLocation = locations.last!
-        
-        // Get lat and long from the current postion
-        guard let lat = self.mapView?.myLocation?.coordinate.latitude else { return }
-        guard let long = self.mapView?.myLocation?.coordinate.longitude else { return }
-        
-        // Fetch nearby places based on the current coordinates
-        Service.sharedInstance.nearbyPlaces(latitude: lat, longitude: long) { (places) in
-            self.nearbyPlaces = places
-        }
-        
-        // Center camera on user location
-        let update = GMSCameraUpdate.setTarget((self.mapView?.myLocation?.coordinate)!, zoom: 15.0)
-        self.mapView?.moveCamera(update)
-        
-        // Pass this postion the listVC
-        let navController = tabBarController?.viewControllers?.last as! UINavigationController
-        let listVC = navController.viewControllers.first as! ListVC
-        listVC.location = self.mapView?.myLocation
-
-    }
-    
-    // Handle authorization for the location manager.
-    func locationManager(_ manager: CLLocationManager, didChangeAuthorization status: CLAuthorizationStatus) {
-        switch status {
-            
-        case .restricted:
-            print("Location access was restricted.")
-        case .denied:
-            print("User denied access to location.")
-            // Display the map using the default location.
-            self.mapView?.isHidden = false
-        case .notDetermined:
-            print("Location status not determined.")
-        case .authorizedAlways: fallthrough
-        case .authorizedWhenInUse:
-            print("Location status is OK.")
-        }
-    }
-    
-    // Handle location manager errors.
-    func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
-        locationManager.stopUpdatingLocation()
-        print("Error: \(error)")
-    }
-
-
-  
-    
-}
     
 
