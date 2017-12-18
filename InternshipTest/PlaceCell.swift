@@ -29,8 +29,8 @@ class PlaceCell: UICollectionViewCell {
     
     let visualEffect: UIView = {
         let view = UIView()
-        view.backgroundColor = .gray
-        view.alpha = 0.8
+        view.backgroundColor = .black
+        view.alpha = 0.7
         return view
     }()
     

@@ -68,11 +68,6 @@ class ListVC: UICollectionViewController {
         
     }
     
-    
-    
-
-
-  
 }
 
 
